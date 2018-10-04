@@ -51,7 +51,7 @@ def send_email(msg, host_address, host_port, my_address, my_pass):
 def main():
     names, emails = get_contacts('mycontacts.txt')
     msg = form_email_msg('message.txt', emails[0], emails[1])
-    send_email(msg)
+    send_email(msg, hostAddress, hostPort, myAddress, password)
     print('Email Sent??')
     return print("Email Sent?")
 
