@@ -6,6 +6,18 @@ from email.message import EmailMessage
 # TODO - do I still need this?
 from string import Template
 
+# TODO - Create function that pulls email/password/host-address/port from a text file locally.
+myAddress = 'myAddress@example.com' # TODO - Replace with email address that will be doing the sending.
+password = 'mypassword' # TODO - Replace with said email address' password.
+hostAddress = 'example.example.com' # TODO - Replace with host address for email service provider.
+''' 
+Host address and a port number,
+both depend on the SMPT settings of your particular email service provider. 
+For instance, in the case of Outlook, line 12 above would instead be:
+hostAddress = 'smtp-mail.outlook.com' 
+'''
+hostPort = 'xxx' # TODO - Replace with email service provider's port # according to their SMPT settings.
+
 def get_contacts(filename):
     names = []
     emails = []
@@ -28,8 +40,10 @@ def form_email_msg(textfile, me, you):
     msg['To'] = you # == the recipient's email address
     return msg
 
-def send_email(msg):
-    s = smtplib.SMTP('localhost')
+def send_email(msg, host_address, host_port, my_address, my_pass):
+    s = smtplib.SMTP(host=host_address, port=host_port)
+    s.starttls() # TODO - Read up on smtplib documentation about this. There is a closing command needed?
+    s.login(my_address, my_pass)
     s.send_message(msg)
     s.quit()
 
@@ -38,9 +52,11 @@ def main():
     names, emails = get_contacts('mycontacts.txt')
     msg = form_email_msg('message.txt', emails[0], emails[1])
     send_email(msg)
-    return "Email Sent?"
+    print('Email Sent??')
+    return print("Email Sent?")
 
-
+if __name__ == '__main__':
+    main()
 
 """
 def read_template(filename):
